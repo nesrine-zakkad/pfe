@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<template id="topic_portal_list" name="Topic Portal List" >
+    <t t-call="portal.portal_layout">
+        <t t-set="breadcrumbs_searchbar" t-value="True" />
+
+        <div class="container">
+            <h1>Available Dissertation Topics</h1>
+            <div class="my-3">
+                <select id="sortby" class="form-select" onchange="location = this.value;">
+                    <t t-foreach="searchbar_sortings.items()" t-as="sort">
+                        <option t-att-value="'/topics/list?sortby=' + sort[0]" t-att-selected="sort[0] == sortby">
+                            <t t-esc="sort[1]['label']"/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Supervisor</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="topics">
+                        <t t-foreach="topics" t-as="topic">
+                            <tr>
+                                <td><t t-esc="topic.name"/></td>
+                                <td><t t-esc="topic.supervisor_id.name or ''"/></td>
+                                <td><t t-raw="topic.description or ''"/></td>
+                            </tr>
+                        </t>
+                    </t>
+                    <t t-if="not topics">
+                        <tr>
+                            <td colspan="3">No topics available at the moment.</td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+</template>
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <!-- Form Template -->
+        <template id="portal_dissertation_avancement_form" name="Submit Dissertation Progress">
+            <t t-call="website.layout">
+                <div class="container mt-5 mb-5">
+                    <h2>Submit Dissertation Progress</h2>
+                    <form action="/dissertation_avancement/" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+
+                        <div class="form-group">
+                            <label for="name">Progress Title</label>
+                            <input type="text" name="name" class="form-control" required="required"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" name="date" class="form-control" required="required"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="progress_percent">Progress (%)</label>
+                            <input type="number" name="progress_percent" class="form-control" min="0" max="100" required="required"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dissertation_id">Dissertation ID</label>
+                            <input type="number" name="dissertation_id" class="form-control" required="required"/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </t>
+        </template>
+
+        <!-- Success Template -->
+        <template id="portal_dissertation_avancement_success" name="Progress Submitted Successfully" >
+            <t t-call="website.layout">
+                <div class="container mt-5 mb-5">
+                    <h3>Thank you! Your dissertation progress has been submitted successfully.</h3>
+                    <a href="/dissertation_avancement/" class="btn btn-secondary mt-3">Submit Another</a>
+                </div>
+            </t>
+        </template>
+
+</odoo>

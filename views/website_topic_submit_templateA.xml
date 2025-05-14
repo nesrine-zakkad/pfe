@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <!-- Template for submitting a new topic -->
+        <template id="topic_submit_templateA" name="Submit Topic Form">
+            <t t-call="website.layout">
+                <div class="container mt-5 mb-5">
+                    <h2>Submit a New Topic</h2>
+                    <form action="/my/topic/submit/save" method="POST">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                        <div class="form-group">
+                            <label for="topic_title">Topic Title</label>
+                            <input type="text" name="name" id="topic_title" required="1" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="topic_description">Description</label>
+                            <textarea name="description" id="topic_description" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="topic_tools">Tools</label>
+                            <textarea name="tools" id="topic_tools" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Create</button>
+                        <t t-if="error">
+                            <p class="text-danger mt-2"><t t-esc="error"/></p>
+                        </t>
+                    </form>
+                </div>
+            </t>
+        </template>
+
+        <!-- Template for success message after topic submission -->
+        <template id="topic_submit_success" name="Topic Submitted Successfully">
+            <t t-call="website.layout">
+                <div class="container mt-5 mb-5">
+                    <h3>Thank you! Your topic has been submitted successfully.</h3>
+                    <a href="/my/topic/submit" class="btn btn-secondary mt-3">Submit Another</a>
+                </div>
+            </t>
+        </template>
+
+</odoo>

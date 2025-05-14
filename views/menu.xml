@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- القائمة الرئيسية لإدارة الأطروحات -->
+    <menuitem id="pfe_main_menu" name="Dissertation Management" sequence="1"/>
+
+    <!-- قائمة فرعية لمجموعات الطلاب -->
+    <menuitem id="menu_student_groups" name="Student Groups"
+              parent="pfe_main_menu" action="action_pfe_sgroupe"/>
+    <menuitem id="menu_topic" name="Topic"
+              parent="pfe_main_menu" action="action_pfe_topic"/>
+    <menuitem id="menu_dissertation" name="Dissertation"
+              parent="pfe_main_menu" action="action_pfe_dissertation"/>
+    <menuitem id="menu_dissertation_defense" name="Dissertation defense"
+              parent="pfe_main_menu" action="action_pfe_defense"/>
+</odoo>
+
+
