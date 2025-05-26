@@ -28,6 +28,7 @@ access_pfe_sgroupe,pfe_sgroupe,model_pfe_sgroupe,base.group_portal,1,1,1,1
 access_dissertation_admin,Admin Access for Dissertation,model_pfe_dissertation,base.group_system,1,1,1,1
 access_hr_employee_portal,access_hr_employee_portal,model_hr_employee,base.group_portal,1,0,0,0
 access_topic_admin,Access Topic for Admin,model_pfe_topic,base.group_system,1,1,1,1
+access_sgroupe_admin,pfe.sgroupe admin,model_pfe_sgroupe,base.group_system,1,1,1,1
 
 
 

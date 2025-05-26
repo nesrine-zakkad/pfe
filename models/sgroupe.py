@@ -79,21 +79,16 @@ class StudentGroup(models.Model):
             'students': my_group.student_ids.mapped('name') if my_group else []
         }
 
-    @api.model
     def assign_topics_by_choice_and_average(self):
-        groups = self.search([], order='group_avg desc')
-
-        for group in groups:
+        for group in self.sorted(key=lambda g: g.group_avg, reverse=True):
             if group.selected_dissertation_id:
-                continue  # A topic has already been assigned
+                continue
 
-            # Sort choices by priority
             sorted_choices = sorted(group.choose_id, key=lambda c: c.sequence)
 
             for choice in sorted_choices:
                 topic = choice.topic_id
                 if topic and topic.state == 'validated' and not topic.assigned_group_id:
-                    # Assign the topic to the group
                     group.selected_dissertation_id = topic.id
                     topic.assigned_group_id = group.id
                     break
