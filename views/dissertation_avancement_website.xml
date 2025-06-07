@@ -1,49 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-        <!-- Form Template -->
-        <template id="portal_dissertation_avancement_form" name="Submit Dissertation Progress">
-            <t t-call="website.layout">
-                <div class="container mt-5 mb-5">
-                    <h2>Submit Dissertation Progress</h2>
-                    <form action="/dissertation_avancement/" method="post">
-                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <!-- Form Template -->
+    <template id="portal_dissertation_avancement_form" name="Submit Dissertation Progress">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h2>Submit Dissertation Progress</h2>
+                <form action="/dissertation_avancement/submit" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
+                    <div class="form-group">
+                        <label for="name">Progress Title</label>
+                        <input type="text" name="name" class="form-control" required="required"/>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="name">Progress Title</label>
-                            <input type="text" name="name" class="form-control" required="required"/>
-                        </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" name="date" class="form-control" required="required"/>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="date" name="date" class="form-control" required="required"/>
-                        </div>
+                    <div class="form-group">
+                        <label for="progress_percent">Progress (%)</label>
+                        <select name="progress_percent" class="form-control" required="required">
+                            <option value="25">25%</option>
+                            <option value="50">50%</option>
+                            <option value="75">75%</option>
+                            <option value="100">100%</option>
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="progress_percent">Progress (%)</label>
-                            <input type="number" name="progress_percent" class="form-control" min="0" max="100" required="required"/>
-                        </div>
+                    <div class="form-group">
+                        <label for="stage">Stage</label>
+                        <select name="stage" class="form-control" required="required">
+                            <option value="state_of_art_study">State of Art Study</option>
+                            <option value="data_collection">Data Collection</option>
+                            <option value="design">Design</option>
+                            <option value="implementation">Implementation</option>
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="dissertation_id">Dissertation ID</label>
-                            <input type="number" name="dissertation_id" class="form-control" required="required"/>
-                        </div>
+                    <div class="form-group">
+                        <label for="dissertation_id">Dissertation</label>
+                        <select name="dissertation_id" class="form-control" required="required">
+                            <t t-foreach="dissertations" t-as="d">
+                                <option t-att-value="d.id"><t t-esc="d.title"/></option>
+                            </t>
+                        </select>
+                    </div>
 
-                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                    </form>
-                </div>
-            </t>
-        </template>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+            </div>
+        </t>
+    </template>
 
-        <!-- Success Template -->
-        <template id="portal_dissertation_avancement_success" name="Progress Submitted Successfully" >
-            <t t-call="website.layout">
-                <div class="container mt-5 mb-5">
-                    <h3>Thank you! Your dissertation progress has been submitted successfully.</h3>
-                    <a href="/dissertation_avancement/" class="btn btn-secondary mt-3">Submit Another</a>
-                </div>
-            </t>
-        </template>
+    <!-- Success Template -->
+    <template id="portal_dissertation_avancement_success" name="Progress Submitted Successfully">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h3>Thank you! Your dissertation progress has been submitted successfully.</h3>
+                <a href="/dissertation_avancement/" class="btn btn-secondary mt-3">Submit Another</a>
+            </div>
+        </t>
+    </template>
 
 </odoo>

@@ -21,4 +21,4 @@ class Dissertation(models.Model):
     group_id = fields.Many2one('pfe.sgroupe', string="Assigned Group")
     choose_id = fields.One2many('pfe.choose_list', 'dissertation_id', string="Choose_list", required=False)
     is_free = fields.Boolean(string="Is Free", default=True, help="Indicates if this dissertation is available for selection.")
-session_id = fields.Many2one('event.event', string="Session", domain="[('is_session', '=', True)]", help="The academic session to which this dissertation belongs.")
+    session_id = fields.Many2one('event.event', string="Session", domain="[('is_session', '=', True)]", help="The academic session to which this dissertation belongs.")

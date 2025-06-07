@@ -1,17 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- القائمة الرئيسية لإدارة الأطروحات -->
+    <!-- ✅ القائمة الرئيسية -->
     <menuitem id="pfe_main_menu" name="Dissertation Management" sequence="1"/>
 
-    <!-- قائمة فرعية لمجموعات الطلاب -->
+    <!-- ✅ القوائم الفرعية -->
     <menuitem id="menu_student_groups" name="Student Groups"
               parent="pfe_main_menu" action="action_pfe_sgroupe"/>
+
     <menuitem id="menu_topic" name="Topic"
               parent="pfe_main_menu" action="action_pfe_topic"/>
+
     <menuitem id="menu_dissertation" name="Dissertation"
               parent="pfe_main_menu" action="action_pfe_dissertation"/>
-    <menuitem id="menu_dissertation_defense" name="Dissertation defense"
+
+    <menuitem id="menu_dissertation_defense" name="Dissertation Defense"
               parent="pfe_main_menu" action="action_pfe_defense"/>
+
+    <!-- ✅ قائمة الإعدادات -->
+    <menuitem id="menu_pfe_configuration" name="Configuration" parent="pfe_main_menu" sequence="99"/>
+
+    <!-- ✅ Sous-menu: Tags -->
+    <menuitem id="menu_pfe_tags" name="Tags" parent="menu_pfe_configuration" action="action_topic_category"/>
+
+    <!-- ✅ Events Action -->
+    <record id="action_pfe_event" model="ir.actions.act_window">
+        <field name="name">Events</field>
+        <field name="res_model">event.event</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- ✅ Events Menu -->
+    <menuitem id="menu_pfe_event"
+              name="Events"
+              parent="menu_pfe_configuration"
+              action="action_pfe_event"
+              sequence="20"/>
+
+
+
+
+
+    <!-- ✅ Employee Action -->
+    <record id="action_employee_form" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- ✅ Employee Menu -->
+    <menuitem id="menu_pfe_employee" name="Employee" parent="pfe_main_menu" sequence="60"
+              action="pfe.action_employee_form"/>
 </odoo>
-
-

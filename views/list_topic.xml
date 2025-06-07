@@ -43,4 +43,14 @@
         </div>
     </t>
 </template>
+    <template id="portal_all_topics" name="Portal My Home : Topics" inherit_id="portal.portal_my_home" priority="10">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="title">My Topics</t>
+            <t t-set="url" t-value="'/topics/list/'"/>
+            <t t-set="placeholder_count" t-value="'count_topics'"/>
+        </t>
+    </xpath>
+</template>
+
 </odoo>

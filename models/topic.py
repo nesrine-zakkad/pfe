@@ -7,6 +7,7 @@ class Topic(models.Model):
     _name = 'pfe.topic'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
     _description = 'Dissertation Topic'
+    _rec_name = 'name'
     name = fields.Char(
         string="SEQ",
         required=True,
@@ -23,7 +24,10 @@ class Topic(models.Model):
         ('validated', 'Validated'),
         ('rejected', 'Rejected'),
     ], string="State", default='pending', tracking=True)
-
+    category_ids = fields.Many2many(
+        'pfe.topic_category', 'topic_category_rel',
+        'emp_id', 'category_id',
+        string='Tags')
     supervisor_id = fields.Many2one('hr.employee', string="Supervisor", tracking=True)
     dissertation_id = fields.Many2one('pfe.dissertation', string="Dissertation", readonly=True)
 

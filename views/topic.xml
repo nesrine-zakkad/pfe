@@ -11,24 +11,24 @@
                         <!-- Header actions -->
                         <header>
                             <button name="action_validate_button" type="object" string="Validate"
-                                class="oe_highlight"
-                                groups="pfe.group_committee_scientifique"
-                                attrs="{'invisible': [('state', '=', 'validated')]}"/>
+                                    class="oe_highlight"
+                                    groups="pfe.group_committee_scientifique"
+                                    attrs="{'invisible': [('state', '=', 'validated')]}"/>
 
                             <button name="action_set_pending_button" type="object" string="Set Pending"
-                                class="oe_highlight btn-warning"
-                                groups="pfe.group_committee_scientifique"
-                                attrs="{'invisible': [('state', '=', 'pending')]}"/>
+                                    class="oe_highlight btn-warning"
+                                    groups="pfe.group_committee_scientifique"
+                                    attrs="{'invisible': [('state', '=', 'pending')]}"/>
 
                             <button name="action_reset_to_proposed" type="object" string="Reset to Proposed"
-                                class="oe_highlight btn-secondary"
-                                groups="pfe.group_committee_scientifique"
-                                attrs="{'invisible': [('state', '=', 'proposed')]}"/>
+                                    class="oe_highlight btn-secondary"
+                                    groups="pfe.group_committee_scientifique"
+                                    attrs="{'invisible': [('state', '=', 'proposed')]}"/>
 
                             <button name="action_reject_button" type="object" string="Reject"
-                                class="oe_highlight btn-danger"
-                                groups="pfe.group_committee_scientifique"
-                                attrs="{'invisible': [('state', '=', 'rejected')]}"/>
+                                    class="oe_highlight btn-danger"
+                                    groups="pfe.group_committee_scientifique"
+                                    attrs="{'invisible': [('state', '=', 'rejected')]}"/>
                         </header>
 
                         <!-- Form content -->
@@ -41,7 +41,7 @@
                         <group string="General Information" colspan="2">
 
                             <field name="name"/>
-                            <field name="title"  required="1"/>
+                            <field name="title" required="1"/>
                             <field name="supervisor_id"
                                    domain="[('category_ids.name', '=', 'Teacher')]"
                                    options="{'no_create': True}"/>
@@ -50,7 +50,10 @@
                         <group string="Details" colspan="2">
                             <field name="description" widget="html" placeholder="Write a description here..."/>
                             <field name="tools" widget="html" placeholder="Write tools here..."/>
+                            <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
                         </group>
+
 
                         <group>
                             <field name="state" widget="statusbar" options="{'clickable': 'True'}" readonly="1"/>
@@ -102,11 +105,11 @@
                                 <div class="oe_kanban_card">
                                     <strong t-esc="record.name.value" style="font-size:16px; color:black;"/>
                                     <div>
-                                        <span>Supervisor: </span>
+                                        <span>Supervisor:</span>
                                         <span t-esc="record.supervisor_id.value" style="font-weight:bold;"/>
                                     </div>
                                     <div class="oe_kanban_bottom">
-                                        <span>Status: </span>
+                                        <span>Status:</span>
                                         <span t-esc="record.state.value"/>
                                     </div>
                                 </div>
@@ -124,6 +127,5 @@
             <field name="view_mode">kanban,tree,form</field>
         </record>
 
-        <menuitem id="menu_topic" name="Topics" parent="pfe_main_menu" action="action_pfe_topic"/>
     </data>
 </odoo>

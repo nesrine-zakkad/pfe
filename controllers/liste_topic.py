@@ -4,7 +4,7 @@ from odoo.addons.portal.controllers.portal import CustomerPortal
 
 class DissertationCustomerPortal(CustomerPortal):
 
-    @http.route('/topics/list', type='http', auth="user", website=True, sitemap=False)
+    @http.route('/topics/list1', type='http', auth="user", website=True, sitemap=False)
     def display_topics(self, sortby=None, **kw):
         searchbar_sortings = {
             'name': {'label': _('Title'), 'order': 'name'},

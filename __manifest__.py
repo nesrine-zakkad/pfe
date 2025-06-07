@@ -4,7 +4,7 @@
     'author': 'Departement of Mathematics and Computer Science',
     'category': 'Education',
     'version': '16.0.0.1',
-    'depends': ['base', 'event','portal', 'hr', 'contacts', 'account', 'website', 'web_responsive','mail'],
+    'depends': ['base', 'event', 'portal', 'hr', 'contacts', 'website', 'web_responsive', 'mail'],
     'sequence': 1,
     'data': [
         'data/teacher_categories.xml',
@@ -16,6 +16,7 @@
         'views/sgroupe.xml',
         'views/topic.xml',
         'views/dissertation.xml',
+        'views/topic_categories.xml',
         'views/defense.xml',
         'views/menu.xml',
         'views/website_menu.xml',
@@ -28,11 +29,11 @@
         'views/website_topic_submit_templateA.xml',
         'views/dissertation_avancement_website.xml',
         'views/template_defense_creat.xml',
-         'views/list_topic.xml',
-         'views/portal_template.xml',
-         'views/departement.xml',
+        'views/list_topic.xml',
+        'views/portal_template.xml',
+        'views/departement.xml',
+        'views/Topic_details.xml',
         'reports/dissertation_re.xml',
-
 
     ],
     'installable': True,

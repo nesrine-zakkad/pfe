@@ -16,10 +16,15 @@
                     </div>
                 </div>
 
+<!--                &lt;!&ndash; Warning &ndash;&gt;-->
+<!--                <div class="alert alert-warning">-->
+<!--                    <strong>Note:</strong> Once a topic is assigned by the administration, you won’t be able to change your preferences.-->
+<!--                </div>-->
+
                 <!-- Error Message -->
-                <t t-if="error">
-                    <p class="text-danger mt-2"><t t-esc="error"/></p>
-                </t>
+<!--                <t t-if="error">-->
+<!--                    <p class="text-danger mt-2"><t t-esc="error"/></p>-->
+<!--                </t>-->
 
                 <!-- Choice Form Table -->
                 <form action="/my/choose/submit/save" method="POST">
@@ -63,8 +68,35 @@
     <template id="choose_success_template" name="Choice Submitted Successfully">
         <t t-call="website.layout">
             <div class="container mt-5 mb-5">
-                <h3>Thank you! Your topic has been submitted successfully.</h3>
+                <h3>Thank you! Your topic preferences have been submitted successfully.</h3>
                 <a href="/my/choose" class="btn btn-secondary mt-3">Back to Choice Page</a>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for showing assigned dissertation -->
+    <template id="portal_my_topic" name="Assigned Topic View">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h2>Your Assigned Dissertation Topic</h2>
+
+                <div class="card mt-4">
+                    <div class="card-body">
+
+                        <p class="card-text">
+                            <strong>Dissertation_Title:</strong>
+                            <t t-esc="dissertation.title"/>
+                        </p>
+                        <p class="card-text">
+                            <strong>Supervisor:</strong>
+                            <t t-esc="dissertation.supervisor_id.name or 'Not assigned yet'"/>
+                        </p>
+
+
+                    </div>
+                </div>
+
+                <a href="/my/home" class="btn btn-secondary mt-4">Back to Dashboard</a>
             </div>
         </t>
     </template>

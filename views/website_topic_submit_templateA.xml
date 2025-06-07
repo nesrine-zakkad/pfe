@@ -1,43 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <template id="topic_submit_templateA" name="Submit Topic Form">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5" style="max-width: 800px;">
+                <div class="card shadow-sm rounded-3">
+                    <div class="card-body p-4">
+                        <h2 class="card-title mb-4 text-center">Submit a New Topic</h2>
+                        <form action="/create_topic/" method="POST" id="topic_form">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
 
-        <!-- Template for submitting a new topic -->
-        <template id="topic_submit_templateA" name="Submit Topic Form">
-            <t t-call="website.layout">
-                <div class="container mt-5 mb-5">
-                    <h2>Submit a New Topic</h2>
-                    <form action="/my/topic/submit/save" method="POST">
-                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb-3">
+                                <label for="topic_title" class="form-label">Topic Title <span class="text-danger">*</span></label>
+                                <input type="text" name="title" id="topic_title" class="form-control" placeholder="Enter topic title" required="required"/>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="topic_title">Topic Title</label>
-                            <input type="text" name="name" id="topic_title" required="1" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="topic_description">Description</label>
-                            <textarea name="description" id="topic_description" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="topic_tools">Tools</label>
-                            <textarea name="tools" id="topic_tools" class="form-control"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">Create</button>
-                        <t t-if="error">
-                            <p class="text-danger mt-2"><t t-esc="error"/></p>
-                        </t>
-                    </form>
+                            <div class="mb-3">
+                                <label for="topic_description" class="form-label">Description</label>
+                                <textarea name="description" id="topic_description" rows="4" class="form-control" placeholder="Write a description..."></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="topic_tools" class="form-label">Tools</label>
+                                <textarea name="tools" id="topic_tools" rows="2" class="form-control" placeholder="Technologies/tools used..."></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="category_ids" class="form-label">Tags</label>
+                                <select name="category_ids" id="category_ids" class="form-select" multiple="multiple">
+                                    <t t-foreach="category_ids" t-as="category">
+                                        <option t-att-value="category.id">
+                                            <t t-esc="category.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                                <div class="form-text">Select existing or add new tags below.</div>
+                            </div>
+
+                            <!-- Nouveau champ pour ajouter un tag -->
+                            <div class="mb-3 d-flex">
+                                <input type="text" id="new_tag_input" class="form-control me-2" placeholder="New tag name"/>
+                                <button type="button" class="btn btn-outline-secondary" id="add_tag_btn">Add Tag</button>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Create Topic</button>
+
+                            <t t-if="error">
+                                <div class="alert alert-danger mt-3" role="alert">
+                                    <t t-esc="error"/>
+                                </div>
+                            </t>
+                        </form>
+                    </div>
                 </div>
-            </t>
-        </template>
+            </div>
 
-        <!-- Template for success message after topic submission -->
-        <template id="topic_submit_success" name="Topic Submitted Successfully">
-            <t t-call="website.layout">
-                <div class="container mt-5 mb-5">
-                    <h3>Thank you! Your topic has been submitted successfully.</h3>
-                    <a href="/my/topic/submit" class="btn btn-secondary mt-3">Submit Another</a>
+            <!-- JS pour ajouter le tag dynamiquement -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const addTagBtn = document.getElementById("add_tag_btn");
+                    const newTagInput = document.getElementById("new_tag_input");
+                    const selectTags = document.getElementById("category_ids");
+
+                    addTagBtn.addEventListener("click", function () {
+                        const newTag = newTagInput.value.trim();
+                        if (newTag !== "") {
+                            // Check if it already exists
+                            const exists = [...selectTags.options].some(opt => opt.text.toLowerCase() === newTag.toLowerCase());
+                            if (!exists) {
+                                const option = document.createElement("option");
+                                option.value = "new:" + newTag; // prefix to handle it in controller
+                                option.text = newTag;
+                                option.selected = true;
+                                selectTags.appendChild(option);
+                            }
+                            newTagInput.value = "";
+                        }
+                    });
+                });
+            </script>
+
+
+        </t>
+    </template>
+
+    <template id="topic_submit_success" name="Topic Submitted Successfully">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5 text-center">
+                <div class="alert alert-success p-4">
+                    <h3>Thank you!</h3>
+                    <p>Your topic has been submitted successfully.</p>
+                    <a href="/create_topic/" class="btn btn-outline-success mt-3">Submit Another Topic</a>
                 </div>
-            </t>
-        </template>
-
+            </div>
+        </t>
+    </template>
 </odoo>

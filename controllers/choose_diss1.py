@@ -2,7 +2,6 @@ from odoo import http
 from odoo.http import request
 from odoo.exceptions import ValidationError
 
-
 class Choose(http.Controller):
 
     @http.route('/my/choose', type='http', auth='user', website=True)
@@ -13,7 +12,13 @@ class Choose(http.Controller):
 
         group = student.group_id
 
-        dissertations = request.env['pfe.dissertation'].sudo().search([])
+        # ✅ إذا الموضوع راهو متعيّن، نوجه الطالب مباشرة للموضوع ديالو
+        if group.selected_dissertation_id:
+            return request.redirect('/my/topic')
+
+        dissertations = request.env['pfe.dissertation'].sudo().search([
+        ])
+
         existing_choices = request.env['pfe.choose_list'].search([('group_id', '=', group.id)])
         sequence_range = list(range(1, len(dissertations) + 1))
 
@@ -61,3 +66,18 @@ class Choose(http.Controller):
                 'error': str(e),
             })
 
+    @http.route('/my/topic', type='http', auth='user', website=True)
+    def my_topic(self, **kwargs):
+        student = request.env.user.employee_id
+        if not student or not student.is_student:
+            return request.not_found()
+
+        group = student.group_id
+        dissertation = group.selected_dissertation_id
+
+        if not dissertation:
+            return request.redirect('/my/choose')
+
+        return request.render('pfe.portal_my_topic', {
+            'dissertation': dissertation,
+        })

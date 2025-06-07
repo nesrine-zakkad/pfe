@@ -17,8 +17,9 @@ class Student(models.Model):
     )
 
     group_id = fields.Many2one(
-        'pfe.sgroupe', string='Student Group',
-        domain="[('student_ids', 'in', id)]", ondelete='set null'
+        'pfe.sgroupe',
+        string='Student Group',
+        ondelete='set null'
     )
 
     is_student_in_group = fields.Boolean(

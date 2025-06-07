@@ -10,7 +10,6 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-
         <!-- عنصر القائمة -->
         <menuitem id="menu_student_groups" name="Student Groups" parent="pfe_main_menu" action="action_pfe_sgroupe"/>
 
@@ -26,7 +25,7 @@
                             <field name="specialization_id"/>
                             <field name="education_level_id"/>
                             <field name="leader_id"/>
-                            <field name="academic_year_id" domain="[('is_session', '=', True)]"/>
+                            <field name="academic_year_id"/>
                             <field name="leader_user_id" invisible="1"/>
                         </group>
                         <group>
@@ -62,21 +61,21 @@
             <field name="arch" type="xml">
                 <tree string="Student Groups" default_order="group_avg desc">
                     <header>
-                        <button name="assign_topics_by_choice_and_average"
-                                type="object"
+                        <button name="%(action_assign_topics_by_average)d"
+                                type="action"
                                 string="Assign Topics"
                                 class="btn-primary"
                                 confirm="Are you sure you want to assign topics to groups based on their choices and averages?"
                                 groups="pfe.group_department_head,base.group_system"/>
-
                     </header>
                     <field name="name"/>
                     <field name="specialization_id"/>
                     <field name="education_level_id"/>
                     <field name="group_avg"/>
                     <field name="leader_id"/>
-                    <field name="student_ids" widget="many2many_tags"/>
+                    <field name="student_ids" />
                     <field name="academic_year_id"/>
+                    <field name="selected_dissertation_id" readonly="1"/>
                 </tree>
             </field>
         </record>
@@ -134,3 +133,4 @@
 
     </data>
 </odoo>
+

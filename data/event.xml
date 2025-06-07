@@ -1,4 +1,12 @@
 <odoo>
+     <!-- Sample Event -->
+    <record id="event_groupes_year_2025" model="event.type">
+        <field name="name">Formation groupes 2025</field>
+    </record>
+
+
+
+
     <!-- Sample Event -->
     <record id="event_academic_year_2025" model="event.event">
         <field name="name">Academic Year 2025</field>

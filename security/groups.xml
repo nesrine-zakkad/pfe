@@ -4,14 +4,14 @@
     <record id="group_teacher" model="res.groups">
         <field name="name">Teacher</field>
         <field name="category_id" ref="base.module_category_human_resources"/>
-        <!-- لا يتم تضمين أنواع مستخدمين أخرى هنا -->
+
     </record>
 
     <!-- تعريف مجموعة رئيس القسم -->
     <record id="group_department_head" model="res.groups">
         <field name="name">Department Head</field>
         <field name="category_id" ref="base.module_category_user_type"/>
-        <!-- لا يتم تضمين أي نوع مستخدم في هذه المجموعة -->
+
     </record>
 
     <!-- تعريف مجموعة اللجنة العلمية -->
@@ -40,4 +40,3 @@
         <field name="category_id" ref="base.module_category_human_resources"/>
     </record>
 </odoo>
-

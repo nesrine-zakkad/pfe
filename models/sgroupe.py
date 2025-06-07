@@ -1,4 +1,6 @@
 from odoo import models, fields, api, exceptions
+
+
 class StudentGroup(models.Model):
     _name = 'pfe.sgroupe'
     _description = 'Student Group'
@@ -6,6 +8,7 @@ class StudentGroup(models.Model):
     _rec_name = 'name'
 
     name = fields.Char(string='Group Name', required=True)
+    compute = fields.Integer(compute='com', string='sequence')
     specialization_id = fields.Many2one('pfe.specialization', string='Specialization', required=True)
     education_level_id = fields.Many2one('pfe.education_level', string='Education Level', required=True)
     choose_id = fields.One2many('pfe.choose_list', 'group_id', string="Choose List", required=True)
@@ -14,9 +17,11 @@ class StudentGroup(models.Model):
         domain=[('is_student', '=', True)], required=True
     )
 
-    student_ids = fields.Many2many(
-        'hr.employee', 'student_group_rel', 'group_id', 'student_id',
-        string='Group Members', domain=[('is_student', '=', True)]
+    student_ids = fields.One2many(
+        'hr.employee',
+        'group_id',
+        string='Group Members',
+        domain=[('is_student', '=', True)]
     )
 
     group_avg = fields.Float(string='Group Average', compute='_compute_group_avg', store=True)
@@ -25,13 +30,11 @@ class StudentGroup(models.Model):
     academic_year_id = fields.Many2one(
         'event.event',
         string="Academic Year",
-        domain="[('is_session', '=', True)]"
-    )
+          )
 
     selected_dissertation_id = fields.Many2one(
-        'dissertation',
-        string='Selected Dissertation',
-        domain="[('assigned_group_id', '=', False), ('state', '=', 'validated')]"
+        comodel_name='pfe.dissertation',
+        string='Selected Dissertation'
     )
 
     @api.depends('student_ids.avg_grade')
@@ -79,16 +82,21 @@ class StudentGroup(models.Model):
             'students': my_group.student_ids.mapped('name') if my_group else []
         }
 
+    @api.model
     def assign_topics_by_choice_and_average(self):
-        for group in self.sorted(key=lambda g: g.group_avg, reverse=True):
-            if group.selected_dissertation_id:
-                continue
+        groupes = self.search([], order='group_avg desc')  # جلب كل المجموعات مرتبة حسب المعدل
 
-            sorted_choices = sorted(group.choose_id, key=lambda c: c.sequence)
+        for groupe in groupes:
+            if groupe.selected_dissertation_id:
+                continue  # إذا لديه موضوع معين بالفعل نتخطى
 
-            for choice in sorted_choices:
-                topic = choice.topic_id
-                if topic and topic.state == 'validated' and not topic.assigned_group_id:
-                    group.selected_dissertation_id = topic.id
-                    topic.assigned_group_id = group.id
+            # ترتيب الاختيارات حسب sequence
+            choix_tries = sorted(groupe.choose_id, key=lambda c: c.sequence)
+            for choix in choix_tries:
+                dissertation = choix.dissertation_id
+                # نتأكد من أن موضوع الأطروحة (topic) في حالة 'validated'
+                # وأن الأطروحة لم تُخصص لمجموعة أخرى بعد
+                if dissertation and dissertation.topic_id.state == 'validated' and not dissertation.group_id:
+                    groupe.selected_dissertation_id = dissertation.id
+                    dissertation.group_id = groupe.id
                     break
