@@ -18,7 +18,12 @@ class Topic(models.Model):
     title= fields.Char(string="Topic Title", required=True)
     description = fields.Html(string="Description")
     tools = fields.Html(string="Tools")
-
+    reference = fields.Char(string="Reference", required=True)
+    attachment_ids = fields.Many2many(
+        'ir.attachment',
+        string="Attachments",
+        help="You can attach files like PDF, images, etc."
+    )
     state = fields.Selection([
         ('pending', 'Pending'),
         ('validated', 'Validated'),
@@ -97,9 +102,15 @@ class Topic(models.Model):
             raise UserError("The Topic must be saved before creating a Dissertation.")
 
         dissertation_vals = {
-            'title': self.name,
+            'title': self.title,
+            'description': self.description,
+            'tools': self.tools,
+            'reference': self.reference,
             'topic_id': self.id,
             'supervisor_id': self.supervisor_id.id if self.supervisor_id else False,
+            'attachment_ids': [(6, 0, self.attachment_ids.ids)],
+            'category_ids': [(6, 0, self.category_ids.ids)],
+
         }
         dissertation = self.env['pfe.dissertation'].create(dissertation_vals)
         self.dissertation_id = dissertation.id

@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!-- عرض قائمة الطلاب -->
+
+        <!-- ✅ Tree view مخصصة بالاسم فقط -->
         <record id="view_student_tree" model="ir.ui.view">
             <field name="name">student.tree</field>
             <field name="model">hr.employee</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
-                    <field name="specialization_id"/>
-                    <field name="education_level_id"/>
-                    <field name="avg_grade"/>
-                    <field name="group_id"/>
                 </tree>
             </field>
         </record>
 
-        <!-- عرض تفاصيل الطالب -->
+        <!-- ✅ Form view للطالب -->
         <record id="view_student_form" model="ir.ui.view">
             <field name="name">student.form</field>
             <field name="model">hr.employee</field>
@@ -28,24 +25,26 @@
                             <field name="specialization_id"/>
                             <field name="education_level_id"/>
                             <field name="avg_grade"/>
-                            <field name="group_id" />
+                            <field name="group_id"/>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
 
-        <!-- إجراء عرض قائمة الطلاب -->
+        <!-- ✅ Action: تظهر فقط الطلاب الحقيقيين -->
         <record id="action_student" model="ir.actions.act_window">
             <field name="name">Students</field>
             <field name="res_model">hr.employee</field>
             <field name="view_mode">tree,form</field>
-           <field name="domain">[('is_student', '=', True)]</field>
-
- <!-- تصفية الطلاب حسب المجموعة للمستخدم الحالي -->
+            <field name="view_id" ref="view_student_tree"/>
+            <field name="domain">[('is_student', '=', True)]</field>
+            <field name="context">{'group_by': ['specialization_id', 'education_level_id']}</field>
         </record>
 
-        <!-- إدراج القائمة في Odoo -->
-        <menuitem id="student_menu" name="Students" parent="hr.menu_hr_root" action="action_student"/>
+        <!-- ✅ MenuItem -->
+        <menuitem id="student_menu" name="Students"
+                  parent="hr.menu_hr_root"
+                  action="action_student"/>
     </data>
 </odoo>

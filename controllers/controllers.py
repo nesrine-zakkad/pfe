@@ -10,11 +10,8 @@ class TopicWebsiteController(http.Controller):
         title = post.get('title')
         description = post.get('description')
         tools = post.get('tools')
+        reference = post.get('reference')
         raw_category_ids = request.httprequest.form.getlist('category_ids')
-
-        error = None
-        if not title:
-            error = "Title is required."
 
         # Process category_ids: split between existing IDs and new tag names
         existing_ids = []
@@ -38,26 +35,39 @@ class TopicWebsiteController(http.Controller):
                         new_tag_ids.append(new_tag.id)
 
         all_tag_ids = existing_ids + new_tag_ids
-
-        if not error:
+        # Handle attachments
+        attachment_ids = []
+        files = request.httprequest.files.getlist('attachments')
+        for file in files:
+            if file and file.filename:
+                data = file.read()
+                attachment = request.env['ir.attachment'].sudo().create({
+                    'name': secure_filename(file.filename),
+                    'datas': base64.b64encode(data),
+                    'res_model': 'pfe.topic',
+                    'type': 'binary',
+                    'mimetype': file.content_type,
+                })
+                attachment_ids.append(attachment.id)
             try:
                 employee = request.env.user.employee_id
                 request.env['pfe.topic'].sudo().create({
                     'title': title,
                     'description': description,
                     'tools': tools,
+                    'reference': reference,
                     'category_ids': [(6, 0, all_tag_ids)],
+                    'attachment_ids': [(6, 0, attachment_ids)],
                     'supervisor_id': employee.id,
-
 
                 })
                 return request.redirect('/topic/submit/success')
             except Exception as e:
-                error = "An error occurred while submitting the topic. Please try again."
+                print("Error while creating topic:", e)
 
         # If error: reload form with error message
         values = {
-            'error': error,
+            'error': None,
             'category_ids': request.env['pfe.topic_category'].sudo().search([]),
         }
         return request.render('pfe.topic_submit_templateA', values)

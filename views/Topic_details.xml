@@ -106,19 +106,49 @@
                                         <hr/>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">File</p>
+                                                <p class="mb-0">Reference</p>
                                             </div>
-<!--                                            <div class="col-sm-9">-->
-<!--                                                <t t-if="topic.dissertation_id and topic.dissertation_id.document">-->
-<!--                                                    <a t-att-href="'data:application/pdf;base64,' + topic.dissertation_id.document.decode('utf-8')"-->
-<!--                                                       t-att-download="topic.dissertation_id.document_filename"-->
-<!--                                                       target="_blank">-->
-<!--                                                        <button>Download File</button>-->
-<!--                                                    </a>-->
-<!--                                                </t>-->
-
-<!--                                            </div>-->
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0">
+                                                    <t t-esc="topic.reference"/>
+                                                </p>
+                                            </div>
                                         </div>
+                                        <hr/>
+
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Attachments</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <t t-if="topic.attachment_ids">
+                                                    <ul class="list-group">
+                                                        <t t-foreach="topic.attachment_ids" t-as="attach">
+                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <a t-attf-href="/web/content/{{ attach.id }}?download=true"
+                                                                   target="_blank">
+                                                                    <t t-esc="attach.name"/>
+                                                                </a>
+                                                                <t t-if="topic.create_uid.id == request.env.user.id and topic.state == 'pending'">
+                                                                    <a t-attf-href="/topic/{{ topic.id }}/attachment/delete/{{ attach.id }}"
+                                                                       class="btn btn-sm btn-outline-danger"
+                                                                       onclick="return confirm('Are you sure you want to delete this attachment?');">
+                                                                        Remove
+                                                                    </a>
+                                                                </t>
+                                                            </li>
+                                                        </t>
+                                                    </ul>
+                                                </t>
+                                                <t t-else="">
+                                                    <p class="text-muted mb-0">No attachments available.</p>
+                                                </t>
+                                            </div>
+                                        </div>
+
+                                        <hr/>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -183,9 +213,9 @@
                             </a>
                         </td>
                         <td>
-                            <a t-attf-href="/topic_detail/{{ topic.id }}">
-                                <t t-esc="topic.title"/>
-                            </a>
+
+                            <t t-esc="topic.title"/>
+
                         </td>
                         <td class="text-right">
                             <t t-esc="topic.supervisor_id.name or 'Unassigned'"/>
@@ -229,6 +259,27 @@
                                     <t t-esc="topic.tools"/>
                                 </textarea>
                             </div>
+                            <div class="mb-3">
+                                <label for="reference" class="form-label">Reference</label>
+                                <textarea id="reference" name="reference" class="form-control" rows="1">
+                                    <t t-esc="topic.reference"/>
+                                </textarea>
+                            </div>
+                            <t t-set="attachments"
+                               t-value="request.env['ir.attachment'].sudo().search([('res_model', '=', 'pfe.topic'), ('res_id', '=', topic.id)])"/>
+
+                            <form t-att-action="'/topic/upload_attachment'" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="topic_id" t-att-value="topic.id"/>
+                                <div class="mb-3">
+                                    <label for="attachments" class="form-label">Upload Attachments</label>
+                                    <input type="file" id="attachments" name="attachments" class="form-control"
+                                           multiple=""/>
+
+                                </div>
+                            </form>
+
+                            <hr/>
+
 
                             <button type="submit" class="btn btn-primary w-100">Update Topic</button>
                         </form>

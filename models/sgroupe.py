@@ -5,9 +5,16 @@ class StudentGroup(models.Model):
     _name = 'pfe.sgroupe'
     _description = 'Student Group'
     _order = 'group_avg desc'
-    _rec_name = 'name'
+    _rec_name = 'G_name'
+    name = fields.Char(
+        string="Group Ref",
+        required=True,
+        copy=False,
+        readonly=True,
+        default=lambda self: self.env['ir.sequence'].next_by_code('pfe.sgroupe')
+    )
 
-    name = fields.Char(string='Group Name', required=True)
+    G_name = fields.Char(string='Group Name', required=True)
     compute = fields.Integer(compute='com', string='sequence')
     specialization_id = fields.Many2one('pfe.specialization', string='Specialization', required=True)
     education_level_id = fields.Many2one('pfe.education_level', string='Education Level', required=True)

@@ -2,6 +2,16 @@
 <odoo>
     <data>
 
+        <!-- Sequence for Student Group -->
+        <record id="seq_pfe_sgroupe" model="ir.sequence">
+            <field name="name">Student Group Sequence</field>
+            <field name="code">pfe.sgroupe</field>
+            <field name="prefix">GRP-</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
         <!-- Action عرض المجموعات -->
         <record id="action_pfe_sgroupe" model="ir.actions.act_window">
             <field name="name">Student Groups</field>
@@ -10,6 +20,7 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
+
         <!-- عنصر القائمة -->
         <menuitem id="menu_student_groups" name="Student Groups" parent="pfe_main_menu" action="action_pfe_sgroupe"/>
 
@@ -21,9 +32,7 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="specialization_id"/>
-                            <field name="education_level_id"/>
+                            <field name="name" readonly="1"/>
                             <field name="leader_id"/>
                             <field name="academic_year_id"/>
                             <field name="leader_user_id" invisible="1"/>
@@ -69,8 +78,6 @@
                                 groups="pfe.group_department_head,base.group_system"/>
                     </header>
                     <field name="name"/>
-                    <field name="specialization_id"/>
-                    <field name="education_level_id"/>
                     <field name="group_avg"/>
                     <field name="leader_id"/>
                     <field name="student_ids" />
@@ -95,12 +102,6 @@
                                     </span>
                                 </div>
                                 <div class="o_kanban_details">
-                                    <strong>Specialization:</strong>
-                                    <field name="specialization_id"/>
-                                    <br/>
-                                    <strong>Education Level:</strong>
-                                    <field name="education_level_id"/>
-                                    <br/>
                                     <strong>Group Average:</strong>
                                     <field name="group_avg"/>
                                     <br/>
@@ -133,4 +134,3 @@
 
     </data>
 </odoo>
-

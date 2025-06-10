@@ -7,6 +7,7 @@
     'depends': ['base', 'event', 'portal', 'hr', 'contacts', 'website', 'web_responsive', 'mail'],
     'sequence': 1,
     'data': [
+        'security/groups.xml',
         'data/teacher_categories.xml',
         'data/education_specializations.xml',
         'data/event.xml',
@@ -21,18 +22,17 @@
         'views/menu.xml',
         'views/website_menu.xml',
         'views/choose_diss.xml',
-        'security/groups.xml',
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
         'security/portal.xml',
         'security/topic_security.xml',
         'views/website_topic_submit_templateA.xml',
-        'views/dissertation_avancement_website.xml',
         'views/template_defense_creat.xml',
         'views/list_topic.xml',
         'views/portal_template.xml',
         'views/departement.xml',
         'views/Topic_details.xml',
+
         'reports/dissertation_re.xml',
 
     ],

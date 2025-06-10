@@ -51,7 +51,11 @@
                             <field name="description" widget="html" placeholder="Write a description here..."/>
                             <field name="tools" widget="html" placeholder="Write tools here..."/>
                             <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="reference" required="1"/>
 
+                        </group>
+                        <group string="Attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
                         </group>
 
 

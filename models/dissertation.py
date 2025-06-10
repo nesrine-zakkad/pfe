@@ -3,13 +3,24 @@ from odoo import models, fields,exceptions
 class Dissertation(models.Model):
     _name = 'pfe.dissertation'
     _description = 'Dissertation'
-    _rec_name= 'title'
 
     title = fields.Char(string="Title", required=False)
-    objectif = fields.Text(string="Objective")
-    defense_date = fields.Date(string="Defense Date")
-    document = fields.Binary(string="Attached Document")
-    document_filename = fields.Char(string="Filename")
+    description = fields.Html(string="Description")
+    tools = fields.Html(string="Tools")
+    reference = fields.Char(string="Reference")
+    attachment_ids = fields.Many2many(
+        'ir.attachment',
+        string="Attachments",
+        help="You can attach files like PDF, images, etc."
+    )
+    category_ids = fields.Many2many(
+        'pfe.topic_category',
+        'dissertation_category_rel',
+        'dissertation_id',
+        'category_id',
+        string='Tags'
+    )
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('validated', 'Validated'),

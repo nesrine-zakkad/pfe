@@ -1,16 +1,15 @@
-
-from odoo import fields, http, SUPERUSER_ID, _
-from odoo.exceptions import AccessError, MissingError
+from odoo import http
+from odoo import _
 from odoo.http import request
-from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
-from odoo.osv import expression
+from odoo.addons.portal.controllers.portal import CustomerPortal
+
 
 class TopicCustomerPortal(CustomerPortal):
 
     @http.route('/topics/list/', type='http', auth="user", website=True, sitemap=False)
     def portal_topic_list(self, sortby=None, **kw):
         searchbar_sortings = {
-            'title': {'label': _('Title'), 'order': 'title asc'},
+            'title': {'label': _('title'), 'order': 'title asc'},
             'state': {'label': _('State'), 'order': 'state asc'},
         }
 
@@ -66,7 +65,21 @@ class TopicCustomerPortal(CustomerPortal):
             'title': post.get('title'),
             'description': post.get('description'),
             'tools': post.get('tools'),
+
         })
         return request.redirect('/topic_detail/%s/' % topic.id)
-
-
+@http.route('/topic/upload_attachment', type='http', auth='user', methods=['POST'], csrf=False)
+def upload_attachment(self, **post):
+    topic_id = int(post.get('topic_id'))
+    files = request.httprequest.files.getlist('attachments')
+    topic = request.env['pfe.topic'].sudo().browse(topic_id)
+    for file in files:
+        data = base64.b64encode(file.read())
+        request.env['ir.attachment'].sudo().create({
+            'name': file.filename,
+            'datas': data,
+            'res_model': 'pfe.topic',
+            'res_id': topic.id,
+            'type': 'binary',
+        })
+    return request.redirect('/topic_detail/%s' % topic.id)

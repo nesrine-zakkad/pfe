@@ -17,9 +17,7 @@ class Teacher(models.Model):
         ('other', 'Other')
     ], string="Specialty")
     category_ids = fields.Many2many(
-        'hr.employee.category',  # النموذج المرتبط
-        'teacher_category_rel',  # اسم جدول الجسر في قاعدة البيانات
-        'teacher_id',  # العمود الذي يشير إلى المعلم
-        'category_id',  # العمود الذي يشير إلى الفئة
+        'hr.employee.category',
+
         string="Categories"
     )
